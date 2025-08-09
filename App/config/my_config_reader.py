@@ -1,15 +1,14 @@
-from pydantic_settings import BaseSettings, SettingsConfigDict
+#!/usr/bin/python3
+
 from pydantic import SecretStr
-from dotenv import load_dotenv
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
-load_dotenv()   #   Загрузка .env-файла
-
-
-class Settings(BaseSettings):   #   Конфигурация настроек .env
+class Settings(BaseSettings):
     api_id: SecretStr
     api_hash: SecretStr
     channel_url: SecretStr
+
 
     model_config = SettingsConfigDict(
         env_file = ".env",

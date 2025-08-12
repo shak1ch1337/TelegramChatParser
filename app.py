@@ -1,11 +1,14 @@
 #!/usr/bin/python3
 
 
+version = "0.1.7"
+
+
 '''--------------------------------------------------
 |                                                   |
 |                                                   |
 |                   TelegramParser                  |
-|                     ver.0.1.5                     |
+|                     ver.0.1.7                     |
 |                                                   |
 |                                                   |
 |               Created by Shak1ch                  |
@@ -70,7 +73,7 @@ root["bg"] = "black"
 
 title = Label(text="Shak1ch-parser", font=("Comic Sans MS", 24), foreground="Green", background="black")
 title.pack()
-version = Label(text="Version 0.1.4", font=("Comic Sans MS", 11), foreground="Green", background="black")
+version = Label(text=f"Version {version}", font=("Comic Sans MS", 11), foreground="Green", background="black")
 version.pack()
 
 

@@ -1,9 +1,10 @@
-# Byte-compiled / optimized / DLL files
+# Bytx`-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
 *$py.class
 *.session
 test_session.session
+parsing.session
 # C extensions
 *.so
 

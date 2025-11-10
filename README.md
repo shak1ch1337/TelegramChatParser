@@ -18,18 +18,14 @@ The project was developed for parsing a telegram bot that shows great deals on v
 
 # Libraries
 
-- Tkinter
-- Telethon
-- Pydantic and Pydantic-settings
-- Playsound
-- Webbrowser
-- Dotenv
+- Tkinter (UI)
+- Telethon (Parsing messages from TG-Chat)
+- Pydantic and Pydantic-settings (For settings)
+- Pygame (Play message sound)
+- Webbrowser (Open link on browser)
+- Dotenv (Load .env)
 
 
 ## Updates and news
 
 In my telegram channel you can find information about creating new projects and updating existing ones.
-
-# Telegram channel link
-
-- [Brain scolopendra](https://t.me/shak1ch_offc)

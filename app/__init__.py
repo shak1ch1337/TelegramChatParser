@@ -1,0 +1,1 @@
+from app.controllers.parser import startParsing

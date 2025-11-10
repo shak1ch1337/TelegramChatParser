@@ -1,95 +1,91 @@
 #!/usr/bin/python3
 
-
-version = "0.1.7"
-
-
-'''--------------------------------------------------
-|                                                   |
-|                                                   |
-|                   TelegramParser                  |
-|                     ver.0.1.7                     |
-|                                                   |
-|                                                   |
-|               Created by Shak1ch                  |
-|           https://t.me/shak1ch_offc               |
-|---------------------------------------------------|'''
-
+#   Importing libraries
 
 from tkinter import *
 from tkinter.ttk import *
 import webbrowser
-from App.telegramParse.parse import start_parsing
-import threading
-import time
+from app.controllers.parser import startParsing
+import pygame
 
 
-def update_ui(data):    #   Добавление данных в таблицу
-    tree.insert("", END, values=data)
+'''
+ㄒ🝗㇄🝗Ꮆ尺闩爪
+尸闩尺丂🝗尺
+𝘷𝘦𝘳𝘴𝘪𝘰𝘯 0.1.9
+
+丂卄闩长丨⼕卄
+'''
 
 
-def sheduler_parsing(): #   Функция, вызывающая парсинг. Работает рекурсивно
+#   Functions for work!
+
+
+def playSound(file):    #   Fucntion for play message-sound
+    pygame.mixer.init()
+    pygame.mixer.music.load(file)
+    pygame.mixer.music.play()
+
+def updateUI(data): #   Insert formated data in table
+    tree.insert("", END, values = data)
+
+
+def openLinkInBrowser(event):   #   Open links on browser
+    webbrowser.open_new(url = link["text"])
+
+
+def shedulerParsing():  #   Recursing function. Start parsing every 30s
     try:
-        data = parse()
-        root.after(0, update_ui, data)
+        data = parseTelegramChannel()
+        window.after(0, updateUI, data)
+        playSound("app/src/message.mp3")
+        print(data) #   Check message
     except Exception as e:
-        print(f"Ошибка {e}")
-    
-    root.after(30000, sheduler_parsing)
+        print(f"Error {e}") #   Check errors
+    window.after(30000, shedulerParsing)
 
 
-def parse():    #   Парсинг и форматирование данных
-    text = start_parsing()
-    text = text.split("\n")
-    name = text[0][1:]
-    difference = f"{text[1].split(" ")[-2]} {text[1].split(" ")[-1]}"
-    price = f"{text[2].split(" ")[-2]} {text[2].split(" ")[-1]}"
-    autobuy = f"{text[3].split(" ")[-2]} {text[3].split(" ")[-1]}"
+def parseTelegramChannel(): #   Getting and formatting message
+    response = startParsing()
+    all_text = response.split("\n")
+
+
+    #   Formated data
+
+    name = all_text[0][1:]
+    difference = all_text[1][1:]
+    price = all_text[2][1:]
+    autobuy = all_text[3][1:]
     link = f"https://steamcommunity.com/market/listings/730/{name}"
     data_array = (name, difference, price, autobuy, link)
+
+
     return data_array
 
 
-def open_link_in_browser(event):    #   Открытие ссылки сразу в браузере
-    webbrowser.open_new(url=link_source["text"])
-
-
-def item_selected(event):   #   Функция выделения строки и перенос ссылки на Label
-    selected_link = ""
+def tableItemsSeelcted(event):  #   Output link from table
     for items in tree.selection():
         item = tree.item(items)
-        i = item["values"]
-    link_source["text"] = f"{i[4]}"
+        table_link = item["values"]
+    link["text"] = f"{table_link[4]}"
 
 
-#   UI
+#   User-Interface
 
 
-root = Tk()
-root.title("TlegramParser")
-root.geometry("1200x800")
-root["bg"] = "black"
+window = Tk()
+window.title("Telegram Parser")
+window.geometry("1200x800")
+window["bg"] = "black"
 
 
-title = Label(text="Shak1ch-parser", font=("Comic Sans MS", 24), foreground="Green", background="black")
-title.pack()
-version = Label(text=f"Version {version}", font=("Comic Sans MS", 11), foreground="Green", background="black")
-version.pack()
+logo = Label(text = "Telegram Parser", background="black", foreground="green", font=("Calibri", 22))
+logo.pack(pady=20)
 
 
-logo = PhotoImage(file="App/src/images/logo.png")
-logoLabel = Label(width=200,  image=logo, border=0)
-logoLabel.pack()
-
-
-link_title = Label(text="Link: ", font=("Comic Sans MS", 14), foreground="white", background="black")
-link_title.pack()
-link_source = Label(text="", font=("Arial", 9), background="black", foreground="white")
-link_source.pack(pady=20)
-link_source.bind("<Button-1>", open_link_in_browser)
-
-
-#   Таблица
+link = Label(text = "https://github.com/shak1ch1337/", background="black", foreground="white", font=("Calibri", 16))
+link.pack(pady=10)
+link.bind("<Button-1>", openLinkInBrowser)
 
 
 columns = ("name", "difference", "price", "autobuy", "link")
@@ -102,17 +98,10 @@ tree.heading("autobuy", text="Автобай:")
 tree.heading("link", text="Ссылка:")
 
 
-tree.column("#1", stretch=NO, width=300)
-tree.column("#2", stretch=NO, width=120)
-tree.column("#3", stretch=NO, width=120)
-tree.column("#4", stretch=NO, width=170)
-tree.column("#5", stretch=NO, width=500)
+tree.bind("<<TreeviewSelect>>", tableItemsSeelcted) #   Seelcted item from table
 
 
-tree.bind("<<TreeviewSelect>>", item_selected)
+window.after(0, shedulerParsing)    #   Start recursive pars-function
 
 
-root.after(0, sheduler_parsing)
-
-
-root.mainloop()
+window.mainloop()

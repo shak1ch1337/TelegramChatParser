@@ -1,12 +1,19 @@
 #!/usr/bin/python3
 
+
+#   Importing libraries
+
 from pydantic import SecretStr
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from dotenv import load_dotenv
 
 
-load_dotenv()   #   Подгружаем .env
+#   Load config from .env
 
+load_dotenv()
+
+
+#   Create class Settings for my_config
 
 class Settings(BaseSettings):
     api_id: SecretStr
